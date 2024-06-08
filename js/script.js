@@ -57,3 +57,24 @@ console.log("a");
 callAPIAsync();
 
 console.log("b");
+
+// todo => Async/await
+
+async function functionAsyncAwait() {
+  /* Espera a promise ser processada e depois atribui o valor de resposta dentro do response
+        Deixa o código mais limpo e faz comn que ele cresça para baixo e nao para os lados que é chamado de callback hell
+    */
+
+  try {
+    const response = await fetch(url);
+
+    console.log("teste:" + response.status);
+  } catch (error) {
+    console.log("teste error:" + error);
+  }
+}
+
+console.log("aa");
+
+functionAsyncAwait();
+console.log("bb");
