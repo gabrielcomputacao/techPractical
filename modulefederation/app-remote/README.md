@@ -1,30 +1,32 @@
-# React + TypeScript + Vite
+MODULE FEDERATION COM VITE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Para rodar o module federation em aplicativos com vite é necessario adicionar essa extensao que ja faz algumas configurações para que os modulos sejam exportados
+(considerando que todos projetos estejam em vite)
 
-Currently, two official plugins are available:
+npm i @originjs/vite-plugin-federation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Depois de instalar precisa colocar essa configurações no vite.config.js na aplicação ROOT ( que vai exportar o conteudo para os demais projetos)
 
-## Expanding the ESLint configuration
+plugins: [
+react(),
+federation({
+name: "remote-app",
+filename: "remoteEntry.js",
+exposes: {
+"./Header": "./src/components/header",
+},
+shared: ["react", "react-dom"],
+}),
+],
+build: {
+modulePreload: false,
+target: "esnext",
+minify: false,
+cssCodeSplit: false,
+},
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+-- Depois de configurar precisa dar um npm run build
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+-- Dando um npm run preview e possivel ver o projeto rodando com o build
+feito e assim ver que na pasta assets/remoteEntry.js por meio de arquivos
+js ele compartilha os modulos em produção
